@@ -2,17 +2,49 @@ module.exports = {
   root: true,
   env: { browser: true, es2020: true },
   extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:react-hooks/recommended',
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react-hooks/recommended",
+    "prettier",
   ],
-  ignorePatterns: ['dist', '.eslintrc.cjs'],
-  parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh'],
+  ignorePatterns: ["dist", ".eslintrc.cjs"],
+  parser: "@typescript-eslint/parser",
+  plugins: [
+    "react-refresh",
+    "@typescript-eslint",
+    "unused-imports",
+    "jsx-a11y",
+    "react-hooks",
+  ],
   rules: {
-    'react-refresh/only-export-components': [
-      'warn',
+    "react-refresh/only-export-components": [
+      "warn",
       { allowConstantExport: true },
     ],
+    "@typescript-eslint/no-empty-function": "warn",
+    "react/no-unescaped-entities": "off",
+    "no-console": "warn",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "react/display-name": "off",
+    // quotes: ["error", "double"],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "no-trailing-spaces": "off",
+    "prettier/prettier": 0,
+    "unused-imports/no-unused-imports": "warn",
+    "unused-imports/no-unused-vars": [
+      "warn",
+      {
+        vars: "all",
+        varsIgnorePattern: "^_",
+        args: "after-used",
+        argsIgnorePattern: "^_",
+      },
+    ],
   },
-}
+  globals: {
+    React: true,
+    JSX: true,
+  },
+};
