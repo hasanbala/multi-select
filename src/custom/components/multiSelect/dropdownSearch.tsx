@@ -10,17 +10,39 @@ export const DropdownSearch = (props: Props) => {
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (props.selectedOptions.length <= 0) {
-      props.setIsDropdownOptionsVisible(!props.isDropdownOptionsVisible);
-      e.stopPropagation();
-      return;
-    }
+    // if (props.selectedOptions.length <= 0) {
+    //   props.setIsDropdownOptionsVisible(!props.isDropdownOptionsVisible);
+    //   e.stopPropagation();
+    //   return;
+    // }
 
     searchInputRef.current?.focus();
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     props.setSearchValue(e.target.value);
+
+  const renderDropdownSearchIcon = () => {
+    // console.log(!props.loading);
+    // console.log(props.inputValue);
+    // console.log(props.searchTerm);
+    if (!props.loading && props.inputValue !== props.searchTerm) {
+      return <div className={styles.loading} />;
+    }
+
+    return (
+      <div
+        className={classNames(
+          styles.arrowWrapper,
+          props.inputValue &&
+            props.isDropdownOptionsVisible &&
+            styles.activeArrow
+        )}
+      >
+        <img src={IconArrow} alt="icon" />
+      </div>
+    );
+  };
 
   return (
     <div className={styles.dropdownSearch} onClick={handleClick}>
@@ -33,29 +55,22 @@ export const DropdownSearch = (props: Props) => {
       <Input
         searchInputRef={searchInputRef}
         onChange={handleInputChange}
-        value={props.searchValue}
+        value={props.inputValue}
         placeholder="Select"
         className={styles.input}
       />
-      <div
-        className={classNames(
-          styles.arrowWrapper,
-          props.searchValue &&
-            props.isDropdownOptionsVisible &&
-            styles.activeArrow
-        )}
-      >
-        <img src={IconArrow} />
-      </div>
+      {renderDropdownSearchIcon()}
     </div>
   );
 };
 
 interface Props {
-  searchValue: string;
+  inputValue: string;
   isDropdownOptionsVisible: boolean;
   setSearchValue: (_val: string) => void;
   selectedOptions: IRestateCharacters[];
   setSelectedOptions: (_val: IRestateCharacters[]) => void;
   setIsDropdownOptionsVisible: (_val: boolean) => void;
+  loading: boolean;
+  searchTerm: string;
 }

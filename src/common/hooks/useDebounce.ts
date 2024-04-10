@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 
-export const useDebounce = (searchTerm: string, delay: number) => {
-  const [value, setValue] = useState("");
+export const useDebounce = (inputValue: string, delay: number) => {
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const handleDebounce = setTimeout(() => {
-      setValue(searchTerm);
+      setSearchTerm(inputValue);
     }, delay);
 
     return () => {
       clearTimeout(handleDebounce);
     };
-  }, [searchTerm, delay]);
+  }, [inputValue, delay]);
 
-  return { value };
+  return { searchTerm };
 };

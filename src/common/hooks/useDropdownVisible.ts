@@ -17,7 +17,7 @@ export const useDropdownOptionsVisible = (
     return () => {
       document.removeEventListener("mousedown", handleClickOutside, true);
     };
-  }, [ref]);
+  }, [ref, setIsDropdownOptionsVisible]);
 
   return { ref };
 };

@@ -4,7 +4,7 @@ import { DropdownOptionsItems } from "@custom/components/multiSelect/dropdownOpt
 import styles from "@assets/styles/multiSelect.module.scss";
 
 export const DropdownOptions = (props: Props) => {
-  if (!props.show || !props.searchValue) {
+  if (!props.show || !props.inputValue) {
     return null;
   }
 
@@ -29,7 +29,7 @@ export const DropdownOptions = (props: Props) => {
   //     option.name
   //       .trim()
   //       .toLocaleLowerCase("en")
-  //       .includes(props.searchValue.trim().toLocaleLowerCase("en"))
+  //       .includes(props.inputValue.trim().toLocaleLowerCase("en"))
   //   );
   // };
 
@@ -44,7 +44,7 @@ export const DropdownOptions = (props: Props) => {
           name={item.name}
           onChange={(checked) => handleChangeCheckbox(checked, item)}
           value={props.selectedOptions.some((option) => option.id === item.id)}
-          emphasizedValue={props.searchValue}
+          emphasizedValue={props.inputValue}
         />
       ));
     }
@@ -66,5 +66,5 @@ interface Props {
   options: IRestateCharacters[];
   selectedOptions: IRestateCharacters[];
   setSelectedOptions: (option: IRestateCharacters[]) => void;
-  searchValue: string;
+  inputValue: string;
 }

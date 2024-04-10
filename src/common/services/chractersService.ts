@@ -5,15 +5,17 @@ export const getCharacters = async (term: string) => {
     return null;
   }
 
+  const requestHeaders: HeadersInit = new Headers({
+    "Access-Control-Allow-Origin": "*",
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Credentials": "true",
+  });
+
   const response = await fetch(
     `${import.meta.env.VITE_APP_API_URL}character?name=${term}`,
     {
       method: "GET",
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Credentials": true,
-        "Content-Type": "application/json",
-      } as any,
+      headers: requestHeaders,
     }
   );
 
