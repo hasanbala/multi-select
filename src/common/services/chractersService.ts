@@ -1,10 +1,6 @@
 import { ICharacters } from "./models/characters";
 
 export const getCharacters = async (term: string) => {
-  if (!term || !term.trim()) {
-    return null;
-  }
-
   const requestHeaders: HeadersInit = new Headers({
     "Access-Control-Allow-Origin": "*",
     "Content-Type": "application/json",

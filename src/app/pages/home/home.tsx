@@ -8,40 +8,32 @@ import { useDebounce } from "@common/hooks/useDebounce";
 export const Home = () => {
   const [loading, setLoading] = useState(false);
   const [characters, setCharacters] = useState<IRestateCharacters[]>([]);
-  const [inputValue, setSearchValue] = useState("");
+  const [inputValue, setInputValue] = useState("");
   const { searchTerm } = useDebounce(inputValue, 500);
 
   useEffect(() => {
-    if (inputValue.trim() !== "") {
-      setLoading(false);
+    setLoading(false);
+    if (inputValue.trim() !== "" && searchTerm === inputValue) {
       getCharacters(searchTerm)
         .then((res: IRestateCharacters[]) => setCharacters(res))
-        .catch((err: any) => console.warn(err))
+        .catch(() => {
+          setCharacters([]);
+        })
         .finally(() => {
           setLoading(true);
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchTerm, searchTerm === inputValue]);
-
-  useEffect(
-    () => {
-      if (inputValue === "") {
-        console.log("lalal");
-        setCharacters([]);
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [searchTerm, searchTerm === inputValue]
-  );
+  }, [searchTerm]);
 
   return (
     <div className={styles.container}>
       <h3>This is a Home Page</h3>
       <MultiSelect
         options={characters}
+        setOptions={setCharacters}
         inputValue={inputValue}
-        setSearchValue={setSearchValue}
+        setInputValue={setInputValue}
         loading={loading}
         searchTerm={searchTerm}
       />

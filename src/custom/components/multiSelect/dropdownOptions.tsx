@@ -4,7 +4,7 @@ import { DropdownOptionsItems } from "@custom/components/multiSelect/dropdownOpt
 import styles from "@assets/styles/multiSelect.module.scss";
 
 export const DropdownOptions = (props: Props) => {
-  if (!props.show || !props.inputValue) {
+  if (!props.show) {
     return null;
   }
 
@@ -24,32 +24,31 @@ export const DropdownOptions = (props: Props) => {
     props.setSelectedOptions([...props.selectedOptions, item]);
   };
 
-  // const renderFilteredOptions = () => {
-  //   return props.options?.filter((option) =>
-  //     option.name
-  //       .trim()
-  //       .toLocaleLowerCase("en")
-  //       .includes(props.inputValue.trim().toLocaleLowerCase("en"))
-  //   );
-  // };
-
   const renderContent = () => {
-    if (props?.options?.length > 0) {
-      return props?.options?.map((item) => (
-        <DropdownOptionsItems
-          key={item.id}
-          episodeLength={item.episodeLength}
-          id={item.id}
-          image={item.image}
-          name={item.name}
-          onChange={(checked) => handleChangeCheckbox(checked, item)}
-          value={props.selectedOptions.some((option) => option.id === item.id)}
-          emphasizedValue={props.inputValue}
-        />
-      ));
+    if (!props.loading && props.inputValue.trim()) {
+      return <span className={styles.notFound}>loading ...</span>;
     }
 
-    return <span className={styles.notFound}>Sonuç bulunamadı</span>;
+    if (props?.options?.length == 0) {
+      if (props.inputValue.trim() == "") {
+        return <span className={styles.notFound}>Herhangi bir data yok</span>;
+      }
+
+      return <span className={styles.notFound}>Sonuç bulunamadı</span>;
+    }
+
+    return props?.options?.map((item) => (
+      <DropdownOptionsItems
+        key={item.id}
+        episodeLength={item.episodeLength}
+        id={item.id}
+        image={item.image}
+        name={item.name}
+        onChange={(checked) => handleChangeCheckbox(checked, item)}
+        value={props.selectedOptions.some((option) => option.id === item.id)}
+        emphasizedValue={props.inputValue}
+      />
+    ));
   };
 
   return (
@@ -67,4 +66,6 @@ interface Props {
   selectedOptions: IRestateCharacters[];
   setSelectedOptions: (option: IRestateCharacters[]) => void;
   inputValue: string;
+  loading: boolean;
+  searchTerm: string;
 }

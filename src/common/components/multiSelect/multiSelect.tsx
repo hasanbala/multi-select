@@ -25,20 +25,23 @@ export const MultiSelect = (props: Props) => {
     >
       <DropdownSearch
         inputValue={props.inputValue}
-        setSearchValue={props.setSearchValue}
+        setInputValue={props.setInputValue}
         selectedOptions={selectedOptions}
         setSelectedOptions={setSelectedOptions}
         isDropdownOptionsVisible={isDropdownOptionsVisible}
         setIsDropdownOptionsVisible={setIsDropdownOptionsVisible}
         loading={props.loading}
         searchTerm={props.searchTerm}
+        setOptions={props.setOptions}
       />
       <DropdownOptions
         options={props.options}
         inputValue={props.inputValue}
-        show={isDropdownOptionsVisible || !props.loading}
+        show={isDropdownOptionsVisible}
         selectedOptions={selectedOptions}
         setSelectedOptions={setSelectedOptions}
+        loading={props.loading}
+        searchTerm={props.searchTerm}
       />
     </div>
   );
@@ -47,7 +50,8 @@ export const MultiSelect = (props: Props) => {
 interface Props {
   options: IRestateCharacters[];
   inputValue: string;
-  setSearchValue: (_val: string) => void;
+  setInputValue: (_val: string) => void;
   loading: boolean;
   searchTerm: string;
+  setOptions: (_val: IRestateCharacters[]) => void;
 }

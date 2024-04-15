@@ -19,14 +19,20 @@ export const DropdownSearch = (props: Props) => {
     searchInputRef.current?.focus();
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    props.setSearchValue(e.target.value);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    props.setInputValue(e.target.value);
+
+    if (e.target.value === "") {
+      props.setOptions([]);
+    }
+  };
 
   const renderDropdownSearchIcon = () => {
-    // console.log(!props.loading);
-    // console.log(props.inputValue);
-    // console.log(props.searchTerm);
-    if (!props.loading && props.inputValue !== props.searchTerm) {
+    if (
+      !props.loading &&
+      props.inputValue !== props.searchTerm &&
+      props.inputValue.trim()
+    ) {
       return <div className={styles.loading} />;
     }
 
@@ -34,7 +40,7 @@ export const DropdownSearch = (props: Props) => {
       <div
         className={classNames(
           styles.arrowWrapper,
-          props.inputValue &&
+          props.inputValue.trim() &&
             props.isDropdownOptionsVisible &&
             styles.activeArrow
         )}
@@ -67,10 +73,11 @@ export const DropdownSearch = (props: Props) => {
 interface Props {
   inputValue: string;
   isDropdownOptionsVisible: boolean;
-  setSearchValue: (_val: string) => void;
+  setInputValue: (_val: string) => void;
   selectedOptions: IRestateCharacters[];
   setSelectedOptions: (_val: IRestateCharacters[]) => void;
   setIsDropdownOptionsVisible: (_val: boolean) => void;
   loading: boolean;
   searchTerm: string;
+  setOptions: (_val: IRestateCharacters[]) => void;
 }
