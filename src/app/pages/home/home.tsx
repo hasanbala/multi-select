@@ -28,7 +28,6 @@ export const Home = () => {
 
   return (
     <div className={styles.container}>
-      <h3>This is a Home Page</h3>
       <MultiSelect
         options={characters}
         setOptions={setCharacters}
