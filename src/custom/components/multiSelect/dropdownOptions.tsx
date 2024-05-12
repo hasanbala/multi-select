@@ -31,10 +31,10 @@ export const DropdownOptions = (props: Props) => {
 
     if (props?.options?.length == 0) {
       if (props.inputValue.trim() == "") {
-        return <span className={styles.notFound}>Herhangi bir data yok</span>;
+        return <span className={styles.notFound}>there is no data</span>;
       }
 
-      return <span className={styles.notFound}>Sonuç bulunamadı</span>;
+      return <span className={styles.notFound}>no result found</span>;
     }
 
     return props?.options?.map((item) => (

@@ -9,15 +9,7 @@ import { Input } from "@common/components/input/input";
 export const DropdownSearch = (props: Props) => {
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    // if (props.selectedOptions.length <= 0) {
-    //   props.setIsDropdownOptionsVisible(!props.isDropdownOptionsVisible);
-    //   e.stopPropagation();
-    //   return;
-    // }
-
-    searchInputRef.current?.focus();
-  };
+  const handleClick = () => searchInputRef.current?.focus();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     props.setInputValue(e.target.value);
