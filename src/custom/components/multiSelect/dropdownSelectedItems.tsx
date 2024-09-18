@@ -1,5 +1,5 @@
 import { IRestateCharacters } from "@common/services/models/characters";
-import { DropdownOptionsSelectedItem } from "./dropdownSelectedItem";
+import { DropdownSelectedItem } from "./dropdownSelectedItem";
 
 export const DropdownOptionsSelectedItems = (props: Props) => {
   const handleOnClickRemoveIcon = (id: number) =>
@@ -10,7 +10,7 @@ export const DropdownOptionsSelectedItems = (props: Props) => {
   return (
     <>
       {props.selectedOptions?.slice(0, 2)?.map((option) => (
-        <DropdownOptionsSelectedItem
+        <DropdownSelectedItem
           key={option.id}
           title={option.name}
           id={option.id}
@@ -18,9 +18,7 @@ export const DropdownOptionsSelectedItems = (props: Props) => {
         />
       ))}
       {props.selectedOptions.length > 2 && (
-        <DropdownOptionsSelectedItem
-          title={`+${props.selectedOptions.length}...`}
-        />
+        <DropdownSelectedItem title={`+${props.selectedOptions.length}...`} />
       )}
     </>
   );

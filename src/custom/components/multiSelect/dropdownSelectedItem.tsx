@@ -2,7 +2,7 @@ import React from "react";
 import IconCross from "@assets/icons/cross.svg";
 import styles from "@assets/styles/multiSelect.module.scss";
 
-export const DropdownOptionsSelectedItem = (props: Props) => {
+export const DropdownSelectedItem = (props: Props) => {
   const handleRemoveItem = () => {
     if (props.id) {
       props.onClickRemoveIcon?.(props.id);
