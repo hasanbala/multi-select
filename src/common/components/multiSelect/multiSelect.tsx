@@ -2,25 +2,24 @@ import { useState } from "react";
 import { IRestateCharacters } from "@common/services/models/characters";
 import styles from "@assets/styles/multiSelect.module.scss";
 import { useDropdownOptionsVisible } from "@common/hooks/useDropdownVisible";
-import { DropdownOptions } from "@custom/components/multiSelect/dropdownOptions";
-import { DropdownSearch } from "@custom/components/multiSelect/dropdownSearch";
+import { DropdownOptions } from "@common/components/multiSelect/dropdownOptions";
+import { DropdownSearch } from "@common/components/multiSelect/dropdownSearch";
 
 export const MultiSelect = (props: Props) => {
   const [selectedOptions, setSelectedOptions] = useState<IRestateCharacters[]>(
     []
   );
+
+  // console.log(selectedOptions);
   const [isDropdownOptionsVisible, setIsDropdownOptionsVisible] =
     useState(false);
-  const { ref: DropdownOptionsContainerRef } = useDropdownOptionsVisible(
-    setIsDropdownOptionsVisible
-  );
-
+  const { ref } = useDropdownOptionsVisible(setIsDropdownOptionsVisible);
   const handleOpenDropdownOptions = () => setIsDropdownOptionsVisible(true);
 
   return (
     <div
       className={styles.container}
-      ref={DropdownOptionsContainerRef}
+      ref={ref}
       onClick={handleOpenDropdownOptions}
     >
       <DropdownSearch
@@ -28,20 +27,18 @@ export const MultiSelect = (props: Props) => {
         setInputValue={props.setInputValue}
         selectedOptions={selectedOptions}
         setSelectedOptions={setSelectedOptions}
-        isDropdownOptionsVisible={isDropdownOptionsVisible}
-        setIsDropdownOptionsVisible={setIsDropdownOptionsVisible}
         loading={props.loading}
         searchTerm={props.searchTerm}
         setOptions={props.setOptions}
+        options={props.options}
       />
       <DropdownOptions
+        setInputValue={props.setInputValue}
         options={props.options}
         inputValue={props.inputValue}
-        show={isDropdownOptionsVisible}
         selectedOptions={selectedOptions}
         setSelectedOptions={setSelectedOptions}
-        loading={props.loading}
-        searchTerm={props.searchTerm}
+        isDropdownOptionsVisible={isDropdownOptionsVisible}
       />
     </div>
   );

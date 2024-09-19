@@ -1,10 +1,8 @@
 import styles from "@assets/styles/multiSelect.module.scss";
-import { DropdownOptionsSelectedItems } from "@custom/components/multiSelect/dropdownSelectedItems";
 import { IRestateCharacters } from "@common/services/models/characters";
 import classNames from "classnames";
 import { useRef } from "react";
 import IconArrow from "@assets/icons/arrow.svg";
-import { Input } from "@common/components/input/input";
 
 export const DropdownSearch = (props: Props) => {
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -14,7 +12,11 @@ export const DropdownSearch = (props: Props) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     props.setInputValue(e.target.value);
 
-    if (e.target.value === "") {
+    if (
+      e.target.value == "" ||
+      e.target.value !== props.selectedOptions[0]?.name
+    ) {
+      props.setSelectedOptions([]);
       props.setOptions([]);
     }
   };
@@ -32,8 +34,9 @@ export const DropdownSearch = (props: Props) => {
       <div
         className={classNames(
           styles.arrowWrapper,
-          props.inputValue.trim() &&
-            props.isDropdownOptionsVisible &&
+          props?.options?.length > 0 &&
+            props.inputValue.trim() !== "" &&
+            props.selectedOptions.length < 1 &&
             styles.activeArrow
         )}
       >
@@ -44,18 +47,12 @@ export const DropdownSearch = (props: Props) => {
 
   return (
     <div className={styles.dropdownSearch} onClick={handleClick}>
-      <div className={styles.wrapperSelectedOptions}>
-        <DropdownOptionsSelectedItems
-          selectedOptions={props.selectedOptions}
-          setSelectedOptions={props.setSelectedOptions}
-        />
-      </div>
-      <Input
-        searchInputRef={searchInputRef}
+      <input
+        ref={searchInputRef}
         onChange={handleInputChange}
         value={props.inputValue}
-        placeholder="Select"
-        className={styles.input}
+        placeholder={"Select"}
+        type="text"
       />
       {renderDropdownSearchIcon()}
     </div>
@@ -63,12 +60,11 @@ export const DropdownSearch = (props: Props) => {
 };
 
 interface Props {
+  options: IRestateCharacters[];
   inputValue: string;
-  isDropdownOptionsVisible: boolean;
   setInputValue: (_val: string) => void;
   selectedOptions: IRestateCharacters[];
-  setSelectedOptions: (_val: IRestateCharacters[]) => void;
-  setIsDropdownOptionsVisible: (_val: boolean) => void;
+  setSelectedOptions: (option: IRestateCharacters[]) => void;
   loading: boolean;
   searchTerm: string;
   setOptions: (_val: IRestateCharacters[]) => void;
