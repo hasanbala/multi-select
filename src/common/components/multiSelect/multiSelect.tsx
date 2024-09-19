@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { IRestateCharacters } from "@common/services/models/characters";
-import styles from "@assets/styles/multiSelect.module.scss";
+// import styles from "@assets/styles/multiSelect.module.scss";
 import { useDropdownOptionsVisible } from "@common/hooks/useDropdownVisible";
 import { DropdownOptions } from "@common/components/multiSelect/dropdownOptions";
 import { DropdownSearch } from "@common/components/multiSelect/dropdownSearch";
@@ -18,7 +18,7 @@ export const MultiSelect = (props: Props) => {
 
   return (
     <div
-      className={styles.container}
+      className="relative cursor-pointer bg-white w-96 h-10 mx-auto z-[10000]"
       ref={ref}
       onClick={handleOpenDropdownOptions}
     >

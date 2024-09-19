@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getCharacters } from "@common/services/chractersService";
 import { IRestateCharacters } from "@common/services/models/characters";
 import { MultiSelect } from "@common/components/multiSelect/multiSelect";
-import styles from "./home.module.scss";
+// import styles from "./home.module.scss";
 import { useDebounce } from "@common/hooks/useDebounce";
 
 export const Home = () => {
@@ -15,7 +15,11 @@ export const Home = () => {
     setLoading(false);
     if (inputValue.trim() !== "" && searchTerm === inputValue) {
       getCharacters(searchTerm)
-        .then((res: IRestateCharacters[]) => setCharacters(res))
+        .then((res: IRestateCharacters[]) => {
+          setCharacters(res);
+
+          console.log(res);
+        })
         .catch(() => {
           setCharacters([]);
         })
@@ -27,7 +31,7 @@ export const Home = () => {
   }, [searchTerm]);
 
   return (
-    <div className={styles.container}>
+    <div className="p-24">
       <MultiSelect
         options={characters}
         setOptions={setCharacters}

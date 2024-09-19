@@ -1,6 +1,6 @@
-import styles from "@assets/styles/multiSelect.module.scss";
+// import styles from "@assets/styles/multiSelect.module.scss";
 import { IRestateCharacters } from "@common/services/models/characters";
-import classNames from "classnames";
+// import classNames from "classnames";
 import { useRef } from "react";
 import IconArrow from "@assets/icons/arrow.svg";
 
@@ -27,18 +27,19 @@ export const DropdownSearch = (props: Props) => {
       props.inputValue !== props.searchTerm &&
       props.inputValue.trim()
     ) {
-      return <div className={styles.loading} />;
+      return (
+        <div className="w-4 h-4 relative animate-spin bg-contain bg-[url('/src/assets/icons/loading.jpeg')]" />
+      );
     }
 
     return (
       <div
-        className={classNames(
-          styles.arrowWrapper,
-          props?.options?.length > 0 &&
-            props.inputValue.trim() !== "" &&
-            props.selectedOptions.length < 1 &&
-            styles.activeArrow
-        )}
+        className={`w-4 absolute right-1.5 top-4 transition-all ease-in-out ${
+          props.options.length > 0 &&
+          props.inputValue.trim() !== "" &&
+          props.selectedOptions.length < 1 &&
+          "rotate-180"
+        }`}
       >
         <img src={IconArrow} alt="icon" />
       </div>
@@ -46,8 +47,12 @@ export const DropdownSearch = (props: Props) => {
   };
 
   return (
-    <div className={styles.dropdownSearch} onClick={handleClick}>
+    <div
+      className="flex items-center h-full border border-gray-300 rounded-lg overflow-hidden max-w-full px-2 relative"
+      onClick={handleClick}
+    >
       <input
+        className="w-full h-full bg-white text-sm ml-1.5 outline-none"
         ref={searchInputRef}
         onChange={handleInputChange}
         value={props.inputValue}
