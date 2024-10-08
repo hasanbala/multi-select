@@ -4,8 +4,3 @@ export interface ICharacters {
   image: string;
   episode: string[];
 }
-
-export interface IRestateCharacters {
-  name: string;
-  id: number;
-}

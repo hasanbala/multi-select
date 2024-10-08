@@ -1,40 +1,26 @@
-import { useEffect, useState } from "react";
-import { getCharacters } from "@common/services/chractersService";
-import { IRestateCharacters } from "@common/services/models/characters";
-import { MultiSelect } from "@common/components/multiSelect/multiSelect";
+import { useState } from "react";
+import { SearchableInput } from "@common/components/searchableInput/searchableInput";
 import styles from "./home.module.scss";
-import { useDebounce } from "@common/hooks/useDebounce";
+import { getCharacters } from "@common/services/chractersService";
 
 export const Home = () => {
-  const [loading, setLoading] = useState(false);
-  const [characters, setCharacters] = useState<IRestateCharacters[]>([]);
-  const [inputValue, setInputValue] = useState("");
-  const { searchTerm } = useDebounce(inputValue, 500);
+  const [selectedOption, setSelectedOption] = useState({
+    label: "Beth Smith",
+    value: 38,
+  } as any);
 
-  useEffect(() => {
-    setLoading(false);
-    if (inputValue.trim() !== "" && searchTerm === inputValue) {
-      getCharacters(searchTerm)
-        .then((res: IRestateCharacters[]) => setCharacters(res))
-        .catch(() => {
-          setCharacters([]);
-        })
-        .finally(() => {
-          setLoading(true);
-        });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchTerm]);
+  console.log(selectedOption);
 
   return (
     <div className={styles.container}>
-      <MultiSelect
-        options={characters}
-        setOptions={setCharacters}
-        inputValue={inputValue}
-        setInputValue={setInputValue}
-        loading={loading}
-        searchTerm={searchTerm}
+      <SearchableInput
+        selectedOption={selectedOption}
+        setSelectedOption={setSelectedOption}
+        placeholder="Select an option"
+        operation={getCharacters}
+        debounceTime={1000}
+        isDisabled={false}
+        className={styles.searchableInput}
       />
     </div>
   );
