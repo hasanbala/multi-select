@@ -51,7 +51,7 @@ export const SearchableInput = (props: Props) => {
           setLoading(true);
         });
     }
-  }, [inputValue, searchTerm, operation, selectedOption]);
+  }, [searchTerm]);
 
   return (
     <div

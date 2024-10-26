@@ -73,19 +73,14 @@ export const DropdownSearch = (props: Props) => {
   };
 
   const renderDropdownSearchIcon = () => {
-    const isSearchTermTriggered =
-      !loading &&
-      !options.length &&
+    const shouldRenderLoading =
+      inputValue.trim() !== "" &&
       searchTerm !== inputValue &&
-      inputValue.trim() &&
       !Object.keys(selectedOption).length;
 
     const isArrowActive = isDropdownOptionsVisible && options.length;
-    // loading &&
-    // inputValue.trim() &&
-    // !Object.keys(selectedOption).length;
 
-    if (isSearchTermTriggered) {
+    if (shouldRenderLoading) {
       return (
         <div className={styles.loadingWrapper}>
           <div className={styles.loading} />
