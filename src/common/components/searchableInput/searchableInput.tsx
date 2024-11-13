@@ -23,7 +23,6 @@ export const SearchableInput = (props: Props) => {
   const [inputValue, setInputValue] = useState(selectedOption?.label ?? "");
   const { searchTerm } = useDebounce(inputValue, debounceTime ?? 1000);
   const [options, setOptions] = useState<ISearchableInputOption[]>([]);
-  const [loading, setLoading] = useState(false);
   const [isDropdownOptionsVisible, setIsDropdownOptionsVisible] =
     useState(false);
   const { ref } = useDropdownOptionsVisible(setIsDropdownOptionsVisible);
@@ -31,7 +30,6 @@ export const SearchableInput = (props: Props) => {
   const handleOpenDropdownOptions = () => setIsDropdownOptionsVisible(true);
 
   useEffect(() => {
-    setLoading(false);
     if (
       inputValue.trim() &&
       searchTerm == inputValue &&
@@ -46,9 +44,6 @@ export const SearchableInput = (props: Props) => {
         .catch((e) => {
           console.warn(e);
           setOptions([]);
-        })
-        .finally(() => {
-          setLoading(true);
         });
     }
   }, [searchTerm]);
@@ -62,7 +57,6 @@ export const SearchableInput = (props: Props) => {
       <DropdownSearch
         id={id}
         name={name}
-        loading={loading}
         searchTerm={searchTerm}
         inputValue={inputValue}
         setInputValue={setInputValue}

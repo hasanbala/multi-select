@@ -11,7 +11,6 @@ export const DropdownSearch = (props: Props) => {
     setInputValue,
     selectedOption,
     setSelectedOption,
-    loading,
     searchTerm,
     setOptions,
     id,
@@ -127,7 +126,6 @@ interface Props {
   setInputValue: (_val: string) => void;
   selectedOption: ISearchableInputOption;
   setSelectedOption: (option: ISearchableInputOption) => void;
-  loading: boolean;
   id?: string;
   name?: string;
   placeholder?: string;
