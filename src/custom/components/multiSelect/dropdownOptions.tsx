@@ -1,43 +1,46 @@
 import { IRestateCharacters } from "@common/services/models/characters";
 import classNames from "classnames";
 import { DropdownOptionsItems } from "@custom/components/multiSelect/dropdownOptionsItems";
-import styles from "@assets/styles/multiSelect.module.scss";
+import styles from "./multiSelect.module.scss";
 
 export const DropdownOptions = (props: Props) => {
-  if (!props.show) {
+  const {
+    inputValue,
+    selectedOptions,
+    setSelectedOptions,
+    show,
+    options,
+    emptyOptionsText,
+  } = props;
+
+  if (!show) {
     return null;
   }
 
   const handleChangeCheckbox = (check: boolean, item: IRestateCharacters) => {
-    const isExistItem = props.selectedOptions.some(
+    const isExistItem = selectedOptions.some(
       (data: IRestateCharacters) => data.id === item.id
     );
 
     if (!check || isExistItem) {
-      props.setSelectedOptions(
-        props.selectedOptions.filter((option) => option.id !== item.id)
+      setSelectedOptions(
+        selectedOptions.filter((option) => option.id !== item.id)
       );
 
       return;
     }
 
-    props.setSelectedOptions([...props.selectedOptions, item]);
+    setSelectedOptions([...selectedOptions, item]);
   };
 
   const renderContent = () => {
-    if (!props.loading && props.inputValue.trim()) {
-      return <span className={styles.notFound}>loading ...</span>;
+    if (!options.length) {
+      return (
+        <div className={styles.notFound}>{emptyOptionsText ?? "None"}</div>
+      );
     }
 
-    if (props?.options?.length == 0) {
-      if (props.inputValue.trim() == "") {
-        return <span className={styles.notFound}>there is no data</span>;
-      }
-
-      return <span className={styles.notFound}>no result found</span>;
-    }
-
-    return props?.options?.map((item) => (
+    return options?.map((item) => (
       <DropdownOptionsItems
         key={item.id}
         episodeLength={item.episodeLength}
@@ -45,16 +48,14 @@ export const DropdownOptions = (props: Props) => {
         image={item.image}
         name={item.name}
         onChange={(checked) => handleChangeCheckbox(checked, item)}
-        value={props.selectedOptions.some((option) => option.id === item.id)}
-        emphasizedValue={props.inputValue}
+        value={selectedOptions.some((option) => option.id === item.id)}
+        emphasizedValue={inputValue}
       />
     ));
   };
 
   return (
-    <div
-      className={classNames(styles.content, props.show && styles.activeContent)}
-    >
+    <div className={classNames(styles.content, show && styles.activeContent)}>
       {renderContent()}
     </div>
   );
@@ -62,10 +63,9 @@ export const DropdownOptions = (props: Props) => {
 
 interface Props {
   show: boolean;
-  options: IRestateCharacters[];
-  selectedOptions: IRestateCharacters[];
-  setSelectedOptions: (option: IRestateCharacters[]) => void;
+  options: any[];
+  selectedOptions: any[];
+  setSelectedOptions: (option: any[]) => void;
   inputValue: string;
-  loading: boolean;
-  searchTerm: string;
+  emptyOptionsText?: string;
 }

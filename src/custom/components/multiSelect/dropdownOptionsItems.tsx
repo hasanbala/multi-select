@@ -1,4 +1,4 @@
-import styles from "@assets/styles/multiSelect.module.scss";
+import styles from "./multiSelect.module.scss";
 
 export const DropdownOptionsItems = (props: Props) => {
   const renderEmphasizedName = () => {

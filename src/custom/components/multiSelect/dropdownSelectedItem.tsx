@@ -1,25 +1,32 @@
 import React from "react";
 import IconCross from "@assets/icons/cross.svg";
-import styles from "@assets/styles/multiSelect.module.scss";
+import styles from "./multiSelect.module.scss";
 
 export const DropdownSelectedItem = (props: Props) => {
-  const handleRemoveItem = () => {
-    if (props.id) {
-      props.onClickRemoveIcon?.(props.id);
-    }
-  };
+  const { title, id, onClickRemoveIcon } = props;
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) =>
     e.stopPropagation();
 
+  const renderContent = () => {
+    if (onClickRemoveIcon && id) {
+      return (
+        <img
+          className={styles.removeSelectedItemContainer}
+          src={IconCross}
+          alt="icon"
+          onClick={() => onClickRemoveIcon(id)}
+        />
+      );
+    }
+
+    return <></>;
+  };
+
   return (
     <div className={styles.selectedItem} onClick={handleClick}>
-      <span className={styles.text}>{props.title}</span>
-      {props.onClickRemoveIcon && (
-        <div className={styles.removeSelectedItemContainer}>
-          <img src={IconCross} alt="icon" onClick={handleRemoveItem} />
-        </div>
-      )}
+      <div className={styles.text}>{title}</div>
+      {renderContent()}
     </div>
   );
 };

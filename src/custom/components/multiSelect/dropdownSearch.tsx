@@ -1,63 +1,74 @@
-import styles from "@assets/styles/multiSelect.module.scss";
-import { DropdownOptionsSelectedItems } from "@custom/components/multiSelect/dropdownSelectedItems";
-import { IRestateCharacters } from "@common/services/models/characters";
+import styles from "./multiSelect.module.scss";
 import classNames from "classnames";
 import { useRef } from "react";
-import IconArrow from "@assets/icons/arrow.svg";
-import { Input } from "@common/components/input/input";
+import { DropdownSelectedItem } from "./dropdownSelectedItem";
 
 export const DropdownSearch = (props: Props) => {
+  const {
+    inputValue,
+    isDropdownOptionsVisible,
+    selectedOptions,
+    setInputValue,
+    setOptions,
+    setSelectedOptions,
+    placeholder,
+    options,
+  } = props;
+
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   const handleClick = () => searchInputRef.current?.focus();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    props.setInputValue(e.target.value);
+    setInputValue(e.target.value);
 
     if (e.target.value === "") {
-      props.setOptions([]);
+      setOptions([]);
     }
   };
 
+  const handleOnClickRemoveIcon = (id: number) =>
+    setSelectedOptions(selectedOptions.filter((item) => item.id !== id));
+
   const renderDropdownSearchIcon = () => {
-    if (
-      !props.loading &&
-      props.inputValue !== props.searchTerm &&
-      props.inputValue.trim()
-    ) {
+    if (!options.length) {
       return <div className={styles.loading} />;
     }
 
     return (
       <div
         className={classNames(
-          styles.arrowWrapper,
-          props.inputValue.trim() &&
-            props.isDropdownOptionsVisible &&
-            styles.activeArrow
+          styles.arrow,
+          isDropdownOptionsVisible && styles.activeArrow
         )}
-      >
-        <img src={IconArrow} alt="icon" />
-      </div>
+      />
     );
   };
 
   return (
     <div className={styles.dropdownSearch} onClick={handleClick}>
       <div className={styles.wrapperSelectedOptions}>
-        <DropdownOptionsSelectedItems
-          selectedOptions={props.selectedOptions}
-          setSelectedOptions={props.setSelectedOptions}
-        />
+        {selectedOptions?.slice(0, 2)?.map((option, index) => (
+          <DropdownSelectedItem
+            key={index}
+            title={option.name}
+            id={option.id}
+            onClickRemoveIcon={handleOnClickRemoveIcon}
+          />
+        ))}
+        {selectedOptions.length > 2 && (
+          <DropdownSelectedItem title={`+${selectedOptions.length} ...`} />
+        )}
       </div>
-      <Input
-        searchInputRef={searchInputRef}
-        onChange={handleInputChange}
-        value={props.inputValue}
-        placeholder="Select"
+      <input
         className={styles.input}
+        ref={searchInputRef}
+        onChange={handleInputChange}
+        value={inputValue}
+        placeholder={placeholder ?? "Select"}
+        type="text"
       />
-      {renderDropdownSearchIcon()}
+      <div className={styles.searchIcon}>{renderDropdownSearchIcon()}</div>
     </div>
   );
 };
@@ -66,10 +77,9 @@ interface Props {
   inputValue: string;
   isDropdownOptionsVisible: boolean;
   setInputValue: (_val: string) => void;
-  selectedOptions: IRestateCharacters[];
-  setSelectedOptions: (_val: IRestateCharacters[]) => void;
-  setIsDropdownOptionsVisible: (_val: boolean) => void;
-  loading: boolean;
-  searchTerm: string;
-  setOptions: (_val: IRestateCharacters[]) => void;
+  selectedOptions: any[];
+  setSelectedOptions: (_val: any[]) => void;
+  setOptions: (_val: any[]) => void;
+  placeholder?: string;
+  options: any[];
 }

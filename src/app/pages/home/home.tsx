@@ -1,40 +1,27 @@
 import { useEffect, useState } from "react";
 import { getCharacters } from "@common/services/chractersService";
 import { IRestateCharacters } from "@common/services/models/characters";
-import { MultiSelect } from "@common/components/multiSelect/multiSelect";
+import { MultiSelect } from "@custom/components/multiSelect/multiSelect";
 import styles from "./home.module.scss";
-import { useDebounce } from "@common/hooks/useDebounce";
 
 export const Home = () => {
-  const [loading, setLoading] = useState(false);
   const [characters, setCharacters] = useState<IRestateCharacters[]>([]);
-  const [inputValue, setInputValue] = useState("");
-  const { searchTerm } = useDebounce(inputValue, 500);
 
   useEffect(() => {
-    setLoading(false);
-    if (inputValue.trim() !== "" && searchTerm === inputValue) {
-      getCharacters(searchTerm)
-        .then((res: IRestateCharacters[]) => setCharacters(res))
-        .catch(() => {
-          setCharacters([]);
-        })
-        .finally(() => {
-          setLoading(true);
-        });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchTerm]);
+    getCharacters("rick")
+      .then((res: IRestateCharacters[]) => setCharacters(res))
+      .catch(() => {
+        setCharacters([]);
+      });
+  }, []);
 
   return (
     <div className={styles.container}>
       <MultiSelect
         options={characters}
         setOptions={setCharacters}
-        inputValue={inputValue}
-        setInputValue={setInputValue}
-        loading={loading}
-        searchTerm={searchTerm}
+        placeholder="Seçiniz"
+        emptyOptionsText="There is no data"
       />
     </div>
   );

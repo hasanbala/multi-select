@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { IRestateCharacters } from "@common/services/models/characters";
-import styles from "@assets/styles/multiSelect.module.scss";
+import styles from "./multiSelect.module.scss";
 import { useDropdownOptionsVisible } from "@common/hooks/useDropdownVisible";
 import { DropdownOptions } from "@custom/components/multiSelect/dropdownOptions";
 import { DropdownSearch } from "@custom/components/multiSelect/dropdownSearch";
 
 export const MultiSelect = (props: Props) => {
+  const { options, setOptions, placeholder, emptyOptionsText } = props;
+
+  const [inputValue, setInputValue] = useState("");
   const [selectedOptions, setSelectedOptions] = useState<IRestateCharacters[]>(
     []
   );
@@ -24,34 +27,30 @@ export const MultiSelect = (props: Props) => {
       onClick={handleOpenDropdownOptions}
     >
       <DropdownSearch
-        inputValue={props.inputValue}
-        setInputValue={props.setInputValue}
         selectedOptions={selectedOptions}
         setSelectedOptions={setSelectedOptions}
         isDropdownOptionsVisible={isDropdownOptionsVisible}
-        setIsDropdownOptionsVisible={setIsDropdownOptionsVisible}
-        loading={props.loading}
-        searchTerm={props.searchTerm}
-        setOptions={props.setOptions}
+        setOptions={setOptions}
+        placeholder={placeholder}
+        inputValue={inputValue}
+        setInputValue={setInputValue}
+        options={options}
       />
       <DropdownOptions
-        options={props.options}
-        inputValue={props.inputValue}
+        options={options}
         show={isDropdownOptionsVisible}
         selectedOptions={selectedOptions}
         setSelectedOptions={setSelectedOptions}
-        loading={props.loading}
-        searchTerm={props.searchTerm}
+        inputValue={inputValue}
+        emptyOptionsText={emptyOptionsText}
       />
     </div>
   );
 };
 
 interface Props {
-  options: IRestateCharacters[];
-  inputValue: string;
-  setInputValue: (_val: string) => void;
-  loading: boolean;
-  searchTerm: string;
-  setOptions: (_val: IRestateCharacters[]) => void;
+  placeholder?: string;
+  options: any[];
+  setOptions: (_val: any[]) => void;
+  emptyOptionsText?: string;
 }
