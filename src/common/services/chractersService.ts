@@ -17,12 +17,15 @@ export const getCharacters = async (term: string) => {
 
   const { results } = await response.json();
 
-  const newResults = results.map((data: ICharacters) => ({
-    name: data.name,
-    id: data.id,
-    episodeLength: data.episode?.length,
-    image: data.image,
-  }));
+  // const newResults = results.map((data: ICharacters) => ({
+  //   name: data.name,
+  //   id: data.id,
+  //   episodeLength: data.episode?.length,
+  //   image: data.image,
+  // }));
 
-  return newResults;
+  return results.map((data: ICharacters) => ({
+    label: data.name,
+    value: data.id,
+  }));
 };

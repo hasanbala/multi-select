@@ -3,7 +3,7 @@ import IconCross from "@assets/icons/cross.svg";
 import styles from "./multiSelect.module.scss";
 
 export const DropdownSelectedItem = (props: Props) => {
-  const { title, id, onClickRemoveIcon } = props;
+  const { name, id, onClickRemoveIcon } = props;
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) =>
     e.stopPropagation();
@@ -25,14 +25,14 @@ export const DropdownSelectedItem = (props: Props) => {
 
   return (
     <div className={styles.selectedItem} onClick={handleClick}>
-      <div className={styles.text}>{title}</div>
+      <div className={styles.text}>{name}</div>
       {renderContent()}
     </div>
   );
 };
 
 interface Props {
-  title: string;
+  name: string;
   id?: number;
   onClickRemoveIcon?: (_val: number) => void;
 }

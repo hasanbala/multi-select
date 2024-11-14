@@ -1,17 +1,15 @@
-import { useState } from "react";
-import { IRestateCharacters } from "@common/services/models/characters";
+import { useEffect, useState } from "react";
 import styles from "./multiSelect.module.scss";
 import { useDropdownOptionsVisible } from "@common/hooks/useDropdownVisible";
 import { DropdownOptions } from "@custom/components/multiSelect/dropdownOptions";
 import { DropdownSearch } from "@custom/components/multiSelect/dropdownSearch";
 
 export const MultiSelect = (props: Props) => {
-  const { options, setOptions, placeholder, emptyOptionsText } = props;
+  const { options, placeholder, emptyOptionsText } = props;
 
+  const [filteredOptions, setFilteredOptions] = useState([] as any);
   const [inputValue, setInputValue] = useState("");
-  const [selectedOptions, setSelectedOptions] = useState<IRestateCharacters[]>(
-    []
-  );
+  const [selectedOptions, setSelectedOptions] = useState<any[]>([]);
   const [isDropdownOptionsVisible, setIsDropdownOptionsVisible] =
     useState(false);
   const { ref: DropdownOptionsContainerRef } = useDropdownOptionsVisible(
@@ -19,6 +17,12 @@ export const MultiSelect = (props: Props) => {
   );
 
   const handleOpenDropdownOptions = () => setIsDropdownOptionsVisible(true);
+
+  useEffect(() => {
+    if (options.length) {
+      setFilteredOptions(options);
+    }
+  }, [options.length]);
 
   return (
     <div
@@ -30,7 +34,7 @@ export const MultiSelect = (props: Props) => {
         selectedOptions={selectedOptions}
         setSelectedOptions={setSelectedOptions}
         isDropdownOptionsVisible={isDropdownOptionsVisible}
-        setOptions={setOptions}
+        setFilteredOptions={setFilteredOptions}
         placeholder={placeholder}
         inputValue={inputValue}
         setInputValue={setInputValue}
@@ -41,8 +45,8 @@ export const MultiSelect = (props: Props) => {
         show={isDropdownOptionsVisible}
         selectedOptions={selectedOptions}
         setSelectedOptions={setSelectedOptions}
-        inputValue={inputValue}
         emptyOptionsText={emptyOptionsText}
+        filteredOptions={filteredOptions}
       />
     </div>
   );
@@ -51,6 +55,5 @@ export const MultiSelect = (props: Props) => {
 interface Props {
   placeholder?: string;
   options: any[];
-  setOptions: (_val: any[]) => void;
   emptyOptionsText?: string;
 }

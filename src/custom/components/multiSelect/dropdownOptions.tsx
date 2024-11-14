@@ -1,30 +1,28 @@
-import { IRestateCharacters } from "@common/services/models/characters";
 import classNames from "classnames";
-import { DropdownOptionsItems } from "@custom/components/multiSelect/dropdownOptionsItems";
 import styles from "./multiSelect.module.scss";
 
 export const DropdownOptions = (props: Props) => {
   const {
-    inputValue,
     selectedOptions,
     setSelectedOptions,
     show,
     options,
     emptyOptionsText,
+    filteredOptions,
   } = props;
 
   if (!show) {
     return null;
   }
 
-  const handleChangeCheckbox = (check: boolean, item: IRestateCharacters) => {
+  const handleChangeCheckbox = (check: boolean, item: any) => {
     const isExistItem = selectedOptions.some(
-      (data: IRestateCharacters) => data.id === item.id
+      (data: any) => data.id == item.value
     );
 
     if (!check || isExistItem) {
       setSelectedOptions(
-        selectedOptions.filter((option) => option.id !== item.id)
+        selectedOptions.filter((option) => option.value !== item.value)
       );
 
       return;
@@ -40,17 +38,26 @@ export const DropdownOptions = (props: Props) => {
       );
     }
 
-    return options?.map((item) => (
-      <DropdownOptionsItems
-        key={item.id}
-        episodeLength={item.episodeLength}
-        id={item.id}
-        image={item.image}
-        name={item.name}
-        onChange={(checked) => handleChangeCheckbox(checked, item)}
-        value={selectedOptions.some((option) => option.id === item.id)}
-        emphasizedValue={inputValue}
-      />
+    if (!filteredOptions.length) {
+      return <div className={styles.notFound}>There is no filtered data</div>;
+    }
+
+    return filteredOptions.map((item) => (
+      <label
+        className={classNames(
+          styles.label,
+          selectedOptions.some((option) => option.value == item.value) &&
+            styles.activeLabel
+        )}
+        key={item.value}
+      >
+        <input
+          type="checkbox"
+          onChange={(e) => handleChangeCheckbox(e.target.checked, item)}
+          checked={selectedOptions.some((option) => option.value == item.value)}
+        />
+        <span className={styles.title}>{item.label}</span>
+      </label>
     ));
   };
 
@@ -66,6 +73,6 @@ interface Props {
   options: any[];
   selectedOptions: any[];
   setSelectedOptions: (option: any[]) => void;
-  inputValue: string;
   emptyOptionsText?: string;
+  filteredOptions: any[];
 }

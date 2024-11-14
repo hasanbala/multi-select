@@ -9,7 +9,7 @@ export const DropdownSearch = (props: Props) => {
     isDropdownOptionsVisible,
     selectedOptions,
     setInputValue,
-    setOptions,
+    setFilteredOptions,
     setSelectedOptions,
     placeholder,
     options,
@@ -20,15 +20,22 @@ export const DropdownSearch = (props: Props) => {
   const handleClick = () => searchInputRef.current?.focus();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
+    const term = e.target.value;
+    setInputValue(term);
 
-    if (e.target.value === "") {
-      setOptions([]);
+    const filtered = options.filter((option) =>
+      option.label.toLowerCase().includes(term.toLowerCase())
+    );
+
+    setFilteredOptions(filtered);
+
+    if (e.target.value == "") {
+      setFilteredOptions(options);
     }
   };
 
   const handleOnClickRemoveIcon = (id: number) =>
-    setSelectedOptions(selectedOptions.filter((item) => item.id !== id));
+    setSelectedOptions(selectedOptions.filter((item) => item.value !== id));
 
   const renderDropdownSearchIcon = () => {
     if (!options.length) {
@@ -51,13 +58,13 @@ export const DropdownSearch = (props: Props) => {
         {selectedOptions?.slice(0, 2)?.map((option, index) => (
           <DropdownSelectedItem
             key={index}
-            title={option.name}
-            id={option.id}
+            name={option.label}
+            id={option.value}
             onClickRemoveIcon={handleOnClickRemoveIcon}
           />
         ))}
         {selectedOptions.length > 2 && (
-          <DropdownSelectedItem title={`+${selectedOptions.length} ...`} />
+          <DropdownSelectedItem name={`+${selectedOptions.length} ...`} />
         )}
       </div>
       <input
@@ -79,7 +86,7 @@ interface Props {
   setInputValue: (_val: string) => void;
   selectedOptions: any[];
   setSelectedOptions: (_val: any[]) => void;
-  setOptions: (_val: any[]) => void;
   placeholder?: string;
   options: any[];
+  setFilteredOptions: (_val: any[]) => void;
 }
