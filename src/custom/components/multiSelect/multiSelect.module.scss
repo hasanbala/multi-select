@@ -1,10 +1,8 @@
 .container {
-  margin: 0 auto;
   z-index: 10000;
-  width: 500px;
   position: relative;
   background-color: white;
-  width: 400px;
+  width: 100%;
   height: 52px;
 
   .dropdownSearch {
@@ -19,7 +17,7 @@
     position: relative;
 
     .wrapperSelectedOptions {
-      max-width: calc(400 * 0.7px);
+      max-width: 100%;
       display: flex;
       align-items: center;
       column-gap: 8px;
@@ -27,7 +25,6 @@
 
     .input {
       all: unset;
-      width: 100%;
       height: 100%;
       background-color: #fff;
       font-size: 14px;
@@ -98,7 +95,7 @@
       justify-content: space-between;
       width: max-content;
       height: 30px;
-      background-color: #c6c7e1;
+      background-color: rgba(0, 0, 0, 0.06);
       color: #454745;
       min-width: 55px;
 
@@ -107,7 +104,6 @@
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
-        max-width: 450px;
         font-size: 13px;
         margin-right: 5px;
       }
@@ -163,6 +159,7 @@
         display: grid;
         place-content: center;
         align-self: center;
+        cursor: pointer;
 
         &::before {
           content: "";

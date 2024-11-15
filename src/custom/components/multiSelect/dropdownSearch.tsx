@@ -72,7 +72,7 @@ export const DropdownSearch = (props: Props) => {
         ref={searchInputRef}
         onChange={handleInputChange}
         value={inputValue}
-        placeholder={placeholder ?? "Select"}
+        placeholder={!selectedOptions.length ? placeholder ?? "Select" : ""}
         type="text"
       />
       <div className={styles.searchIcon}>{renderDropdownSearchIcon()}</div>

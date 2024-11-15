@@ -5,6 +5,7 @@ import styles from "./home.module.scss";
 
 export const Home = () => {
   const [characters, setCharacters] = useState([]);
+  const [selectedValues, setSelectedValues] = useState([] as any);
 
   useEffect(() => {
     getCharacters("rick")
@@ -20,6 +21,8 @@ export const Home = () => {
         options={characters}
         placeholder="Seçiniz"
         emptyOptionsText="There is no data"
+        selectedOptions={selectedValues}
+        setSelectedOptions={setSelectedValues}
       />
     </div>
   );

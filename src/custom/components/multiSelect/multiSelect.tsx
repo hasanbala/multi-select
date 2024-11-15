@@ -5,11 +5,16 @@ import { DropdownOptions } from "@custom/components/multiSelect/dropdownOptions"
 import { DropdownSearch } from "@custom/components/multiSelect/dropdownSearch";
 
 export const MultiSelect = (props: Props) => {
-  const { options, placeholder, emptyOptionsText } = props;
+  const {
+    options,
+    placeholder,
+    emptyOptionsText,
+    selectedOptions,
+    setSelectedOptions,
+  } = props;
 
   const [filteredOptions, setFilteredOptions] = useState([] as any);
   const [inputValue, setInputValue] = useState("");
-  const [selectedOptions, setSelectedOptions] = useState<any[]>([]);
   const [isDropdownOptionsVisible, setIsDropdownOptionsVisible] =
     useState(false);
   const { ref: DropdownOptionsContainerRef } = useDropdownOptionsVisible(
@@ -56,4 +61,6 @@ interface Props {
   placeholder?: string;
   options: any[];
   emptyOptionsText?: string;
+  selectedOptions: any[];
+  setSelectedOptions: (_val: any) => void;
 }
