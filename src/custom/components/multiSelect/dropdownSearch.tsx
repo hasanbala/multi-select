@@ -1,5 +1,5 @@
-import styles from "./multiSelect.module.scss";
-import classNames from "classnames";
+// import styles from "./multiSelect.module.scss";
+// import classNames from "classnames";
 import { useRef } from "react";
 import { DropdownSelectedItem } from "./dropdownSelectedItem";
 
@@ -13,10 +13,10 @@ export const DropdownSearch = (props: Props) => {
     setSelectedOptions,
     placeholder,
     options,
+    selectedItemRef,
   } = props;
 
   const searchInputRef = useRef<HTMLInputElement>(null);
-
   const handleClick = () => searchInputRef.current?.focus();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,43 +39,47 @@ export const DropdownSearch = (props: Props) => {
 
   const renderDropdownSearchIcon = () => {
     if (!options.length) {
-      return <div className={styles.loading} />;
+      return (
+        <div className="w-4 h-4 animate-spin bg-contain bg-[url('/src/assets/icons/loading.jpeg')]" />
+      );
     }
 
     return (
       <div
-        className={classNames(
-          styles.arrow,
-          isDropdownOptionsVisible && styles.activeArrow
-        )}
+        className={`w-4 h-4 bg-[url('/src/assets/icons/arrow.svg')] bg-contain bg-no-repeat transition-all duration-300 ${
+          isDropdownOptionsVisible ? "rotate-180" : ""
+        }`}
       />
     );
   };
 
   return (
-    <div className={styles.dropdownSearch} onClick={handleClick}>
-      <div className={styles.wrapperSelectedOptions}>
-        {selectedOptions?.slice(0, 2)?.map((option, index) => (
-          <DropdownSelectedItem
-            key={index}
-            name={option.label}
-            id={option.value}
-            onClickRemoveIcon={handleOnClickRemoveIcon}
-          />
-        ))}
-        {selectedOptions.length > 2 && (
-          <DropdownSelectedItem name={`+${selectedOptions.length} ...`} />
-        )}
+    <div
+      className="flex h-max overflow-y-auto w-full items-center border border-[#d9d9d9] rounded-lg px-2.5 py-1"
+      onClick={handleClick}
+      ref={selectedItemRef}
+    >
+      <div className="h-max overflow-y-auto w-full items-center">
+        <div className="flex flex-wrap gap-1">
+          {selectedOptions.map((option, index) => (
+            <DropdownSelectedItem
+              key={index}
+              name={option.label}
+              id={option.value}
+              onClickRemoveIcon={handleOnClickRemoveIcon}
+            />
+          ))}
+        </div>
+        <input
+          className="w-full ml-2 bg-white text-sm h-10 outline-none"
+          ref={searchInputRef}
+          onChange={handleInputChange}
+          value={inputValue}
+          placeholder={!selectedOptions.length ? placeholder ?? "Select" : ""}
+          type="text"
+        />
       </div>
-      <input
-        className={styles.input}
-        ref={searchInputRef}
-        onChange={handleInputChange}
-        value={inputValue}
-        placeholder={!selectedOptions.length ? placeholder ?? "Select" : ""}
-        type="text"
-      />
-      <div className={styles.searchIcon}>{renderDropdownSearchIcon()}</div>
+      <div className="relative">{renderDropdownSearchIcon()}</div>
     </div>
   );
 };
@@ -89,4 +93,5 @@ interface Props {
   placeholder?: string;
   options: any[];
   setFilteredOptions: (_val: any[]) => void;
+  selectedItemRef: any;
 }

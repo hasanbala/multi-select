@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getCharacters } from "@common/services/chractersService";
 import { MultiSelect } from "@custom/components/multiSelect/multiSelect";
-import styles from "./home.module.scss";
+// import styles from "./home.module.scss";
 
 export const Home = () => {
   const [characters, setCharacters] = useState([]);
@@ -9,14 +9,17 @@ export const Home = () => {
 
   useEffect(() => {
     getCharacters("rick")
-      .then((res: any) => setCharacters(res))
+      .then((res: any) => {
+        console.log(res);
+        setCharacters(res);
+      })
       .catch(() => {
         setCharacters([]);
       });
   }, []);
 
   return (
-    <div className={styles.container}>
+    <div className="flex items-center justify-center flex-col min-h-screen w-full">
       <MultiSelect
         options={characters}
         placeholder="Seçiniz"

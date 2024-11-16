@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import styles from "./multiSelect.module.scss";
+import { useEffect, useRef, useState } from "react";
+// import styles from "./multiSelect.module.scss";
 import { useDropdownOptionsVisible } from "@common/hooks/useDropdownVisible";
 import { DropdownOptions } from "@custom/components/multiSelect/dropdownOptions";
 import { DropdownSearch } from "@custom/components/multiSelect/dropdownSearch";
@@ -21,6 +21,9 @@ export const MultiSelect = (props: Props) => {
     setIsDropdownOptionsVisible
   );
 
+  const selectedItemRef = useRef<any>(null);
+  const [dropdownSearchHeight, setDropdownSearchHeight] = useState(0);
+
   const handleOpenDropdownOptions = () => setIsDropdownOptionsVisible(true);
 
   useEffect(() => {
@@ -29,9 +32,24 @@ export const MultiSelect = (props: Props) => {
     }
   }, [options.length]);
 
+  useEffect(() => {
+    const updateOffsetHeight = () => {
+      if (selectedItemRef.current) {
+        setDropdownSearchHeight(selectedItemRef.current.offsetHeight);
+      }
+    };
+
+    window.addEventListener("resize", updateOffsetHeight);
+    updateOffsetHeight();
+
+    return () => {
+      window.removeEventListener("resize", updateOffsetHeight);
+    };
+  }, [selectedOptions]);
+
   return (
     <div
-      className={styles.container}
+      className="relative w-[300px] h-10 bg-white z-[10000]"
       ref={DropdownOptionsContainerRef}
       onClick={handleOpenDropdownOptions}
     >
@@ -44,6 +62,7 @@ export const MultiSelect = (props: Props) => {
         inputValue={inputValue}
         setInputValue={setInputValue}
         options={options}
+        selectedItemRef={selectedItemRef}
       />
       <DropdownOptions
         options={options}
@@ -52,6 +71,7 @@ export const MultiSelect = (props: Props) => {
         setSelectedOptions={setSelectedOptions}
         emptyOptionsText={emptyOptionsText}
         filteredOptions={filteredOptions}
+        dropdownSearchHeight={dropdownSearchHeight}
       />
     </div>
   );
